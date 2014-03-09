@@ -52,6 +52,11 @@ define( "pageDirective",
 										safeApply( scope );
 										bindDOM( scope, element, attribute );
 										
+										//This will bind the halfpage object to the halfpage directive.
+										var pageObject = scope.element.data( "page-object" );
+										scope.pageObject = pageObject;
+										pageObject.scope = scope;
+
 										/*
 											A note on the GUID of the pages.
 
@@ -69,7 +74,7 @@ define( "pageDirective",
 											AND much more importantly, the GUID of every
 												page that can be a main page must not be the same.
 										*/
-										scope.GUID = attribute.page;
+										scope.GUID = pageObject.GUID || attribute.page;
 										scope.namespace = scope.name + "-" + scope.appName.toLowerCase( );
 										scope.safeApply( );
 

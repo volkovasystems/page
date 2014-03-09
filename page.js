@@ -32,15 +32,31 @@ try{ var base = window; }catch( error ){ base = exports; }
 					bindDOMFactory( appNamespace );
 					autoResizeDirective( appNamespace );
 
-					var Page = function Page( namespace ){
-						
+					var Page = function Page( namespace, view ){
+						this.namespace = namespace;
+						this.view = view;
 					};
 
-					Page.prototype.attachComponent = function attachComponent( componentID ){
-						var componentObject = $( "#" + componentID );
-						var componentElement = componentObject[ 0 ];
-						if( !componentElement ){
-							throw new Error( "failed to attach page component" );
+					Page.prototype.overrideGUID = function overrideGUID( GUID ){
+						this.GUID = GUID;
+					};
+
+					Page.prototype.attachComponent = function attachComponent( component ){
+						var componentObject;
+						if( typeof component == "string" ){
+							componentObject = $( component );	
+						}else if( component instanceof $ ){
+							componentObject = component;
+						}else{
+							throw new Error( "invalid component" );
+						}
+
+						if( componentObject.length > 1 ){
+							throw new Error( "component refers to many elements" );
+						}
+
+						if( componentObject.length == 0 ){
+							throw new Error( "component does not exists" );
 						}
 
 						if( componentObject.hasClass( "page-attached" ) ){
@@ -51,6 +67,7 @@ try{ var base = window; }catch( error ){ base = exports; }
 						pageComponent = $( pageComponentTemplate );
 						pageComponent.attr( "app-name", appNamespace );
 						componentObject.append( pageComponent );
+						this.pageComponent = pageComponent;
 
 						var self = this;
 						pageComponent.ready( function onReady( ){
@@ -61,6 +78,36 @@ try{ var base = window; }catch( error ){ base = exports; }
 							componentObject.addClass( "page-attached" );
 							pageComponent.data( "page-object", self );
 						} );
+					};
+
+					Page.prototype.loadView = function loadView( ){
+
+					};
+
+					Page.prototype.unloadView = function unloadView( ){
+
+					};
+
+					//Note that replacing a view automatically loads the view.
+					Page.prototype.replaceView = function replaceView( view ){
+
+					};
+
+					Page.prototype.checkIfAttached = function checkIfAttached( ){
+						return ( "pageContainer" in this )
+							&& this.pageContainer.hasClass( "page-attached" );
+					};
+
+					Page.prototype.getHeaderControlComponent = function getHeaderControlComponent( ){
+						return this.pageComponent.find( "> header-control" );
+					};
+
+					Page.prototype.getFooterControlComponent = function getFooterControlComponent( ){
+						return this.pageComponent.find( "> footer-control" );	
+					};
+
+					Page.prototype.getPageContentComponent = function getPageContentComponent( ){
+						return this.pageComponent.find( "> page-content" );
 					};
 
 					base.Page = Page;
