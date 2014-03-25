@@ -5,7 +5,8 @@ define( "pageContentDirective",
 		"chance",
 		"jquery",
 		"requirejs",
-		"angular"
+		"angular",
+		"moduleLoader"
 	],
 	function construct( ){
 		requirejs.config( {
@@ -29,7 +30,7 @@ define( "pageContentDirective",
 							"bindDOM",
 							"safeApply",
 							"$timeout",
-							function directive( bindDOM, safeApply, $timeout ){
+							function construct( bindDOM, safeApply, $timeout ){
 								return {
 									"restrict": "A",
 									"controller": pageContentController,
@@ -69,6 +70,7 @@ define( "pageContentDirective",
 								}
 							}
 						] );
-				Arbiter.publish( "module-loaded:page-content-directive", null, { "persist": true } );
+
+				moduleLoader( "page-content-directive" ).onLoad( );
 			} );
 	} );

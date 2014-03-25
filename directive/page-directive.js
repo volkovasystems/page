@@ -5,7 +5,8 @@ define( "pageDirective",
 		"chance",
 		"jquery",
 		"requirejs",
-		"angular"
+		"angular",
+		"moduleLoader"
 	],
 	function construct( ){
 		requirejs.config( {
@@ -18,7 +19,6 @@ define( "pageDirective",
 				"footerControlDirective": staticBaseURL + "/half-page/directive/footer-control-directive"
 			}
 		} );
-
 		requirejs( [
 				"pageStyle",
 				"pageTemplate",
@@ -52,7 +52,7 @@ define( "pageDirective",
 										safeApply( scope );
 										bindDOM( scope, element, attribute );
 										
-										//This will bind the halfpage object to the halfpage directive.
+										//This will bind the page object to the page directive.
 										var pageObject = scope.element.data( "page-object" );
 										scope.pageObject = pageObject;
 										pageObject.scope = scope;
@@ -78,25 +78,28 @@ define( "pageDirective",
 										scope.namespace = scope.name + "-" + scope.appName.toLowerCase( );
 										scope.safeApply( );
 
+										scope.DOMID = halfpageObject.namespace;
+										scope.element.attr( "domid", scope.DOMID );
+
 										scope.element.attr( "namespace", scope.namespace );
 										pageStyle( scope.GUID );
 										Arbiter.subscribe( "on-resize:" + scope.namespace,
+											"on-resize:" + scope.DOMID, 
 											function handler( ){
-												var parentElement = scope.element.parent( );
-												var parentZIndex = parentElement.css( "z-index" );
 												scope.element.css( {
 													"position": "absolute !important",
-													"top": "0px !important",
-													"left": "0px !important",
-													//"z-index": " !important",
-													"height": parentElement.height( ) + "px",
-													"width": parentElement.width( ) + "px"
+													"top": scope.pageObject.getY( ),
+													"left": scope.pageObject.getX( ),
+													"z-index": scope.pageObject.getZIndex( ),
+													"height": scope.pageObject.getHeight( ),
+													"width": scope.pageObject.getWidth( )
 												} );
 											} );
 									}
 								}
 							}
 						] );
-				Arbiter.publish( "module-loaded:page-directive", null, { "persist": true } );
+
+				moduleLoader( "page-directive" ).onLoad( );
 			} );
 	} );

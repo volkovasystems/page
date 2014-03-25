@@ -5,7 +5,8 @@ define( "footerControlDirective",
 		"chance",
 		"jquery",
 		"requirejs",
-		"angular"
+		"angular",
+		"moduleLoader"
 	],
 	function construct( ){
 		requirejs.config( {
@@ -24,7 +25,7 @@ define( "footerControlDirective",
 			function construct( footerControlStyle, 
 								footerControlController )
 			{
-				appDetermine( "HalfPage" )
+				appDetermine( "Page" )
 					.directive( "footerControl",
 						[
 							"bindDOM",
@@ -71,6 +72,7 @@ define( "footerControlDirective",
 								}
 							}
 						] );
-				Arbiter.publish( "module-loaded:footer-control-directive", null, { "persist": true } );
+
+				moduleLoader( "footer-control-directive" ).onLoad( );
 			} );
 	} );

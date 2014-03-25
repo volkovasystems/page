@@ -5,7 +5,8 @@ define( "headerControlDirective",
 		"chance",
 		"jquery",
 		"requirejs",
-		"angular"
+		"angular",
+		"moduleLoader"
 	],
 	function construct( ){
 		requirejs.config( {
@@ -30,7 +31,7 @@ define( "headerControlDirective",
 							"bindDOM",
 							"safeApply",
 							"$timeout",
-							function directive( bindDOM, safeApply, $timeout ){
+							function construct( bindDOM, safeApply, $timeout ){
 								return {
 									"restrict": "A",
 									"controller": headerControlController,
@@ -70,6 +71,7 @@ define( "headerControlDirective",
 								}
 							}
 						] );
-				Arbiter.publish( "module-loaded:header-control-directive", null, { "persist": true } );
+				
+				moduleLoader( "header-control-directive" ).onLoad( );
 			} );
 	} );
