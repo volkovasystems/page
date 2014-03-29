@@ -78,11 +78,12 @@ define( "pageDirective",
 										scope.namespace = scope.name + "-" + scope.appName.toLowerCase( );
 										scope.safeApply( );
 
-										scope.DOMID = halfpageObject.namespace;
+										scope.DOMID = pageObject.namespace;
 										scope.element.attr( "domid", scope.DOMID );
 
 										scope.element.attr( "namespace", scope.namespace );
 										pageStyle( scope.GUID );
+										
 										Arbiter.subscribe( "on-resize:" + scope.namespace,
 											"on-resize:" + scope.DOMID, 
 											function handler( ){

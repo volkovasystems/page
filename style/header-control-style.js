@@ -10,6 +10,7 @@ define( "headerControlStyle",
 			var style = { };
 			var selector =  "div[header-control='" + GUID + "']";
 			style[ selector ] = {
+				"overflow-x": "hidden",
 				"position": "absolute !important",
 				"top": "0px !important",
 				"left": "0px !important"

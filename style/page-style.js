@@ -10,6 +10,7 @@ define( "pageStyle",
 			var style = { };
 			var selector =  "div[page='" + GUID + "']";
 			style[ selector ] = {
+				"overflow": "hidden",
 				"position": "absolute !important",
 				"top": "0px !important",
 				"left": "0px !important"

@@ -217,6 +217,30 @@ try{ var base = window; }catch( error ){ base = exports; }
 						return zIndex + 1;
 					};
 
+					/*
+						This will return the header control object.
+					*/
+					Page.prototype.getHeaderControl = function getHeaderControl( ){
+						return scope.element.find( "div[header-control='" + this.GUID + "']" )
+							.data( "header-control-object" );
+					};
+
+					/*
+						This will return the footer control object.
+					*/
+					Page.prototype.getFooterControl = function getFooterControl( ){
+						return scope.element.find( "div[footer-control='" + this.GUID + "']" )
+							.data( "footer-control-object" );
+					};
+
+					/*
+						This will return the page content object.
+					*/
+					Page.prototype.getPageContent = function getPageContent( ){
+						return scope.element.find( "div[page-content='" + this.GUID + "']" )
+							.data( "page-content-object" );
+					};
+
 					base.Page = Page;
 				}  );
 			

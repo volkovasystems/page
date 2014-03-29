@@ -10,6 +10,7 @@ define( "footerControlStyle",
 			var style = { };
 			var selector =  "div[footer-control='" + GUID + "']";
 			style[ selector ] = {
+				"overflow-x": "hidden",
 				"position": "absolute !important",
 				"bottom": "0px !important",
 				"left": "0px !important"

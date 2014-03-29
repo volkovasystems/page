@@ -25,13 +25,63 @@ define( "headerControlDirective",
 			function construct( headerControlStyle, 
 								headerControlController )
 			{
+
+				/*
+					This is not exposed in the outside world because this is intended to
+						be accessible via an interface.
+
+					This class is designed like this so that the page is the only
+						object that can manipulate the header control container.
+				*/
+				var HeaderControl = function HeaderControl( scope ){
+					this.scope = scope;
+					this.reconstructDOMID( );
+				};
+
+				HeaderControl.prototype.reconstructDOMID = function reconstructDOMID( ){
+					var parent = this.scope.element.parent( );
+					var parentDOMID = parent.attr( "domid" );
+					this.DOMID = parentDOMID + "-header-control";
+					this.scope.element.attr( "domid", this.DOMID );
+					this.scope.DOMID = this.DOMID;
+				};
+
+				HeaderControl.prototype.getX  = function getX( ){
+					return 0;
+				};
+
+				HeaderControl.prototype.getY = function getY( ){
+					return 0;
+				};
+
+				HeaderControl.prototype.getHeight = function getHeight( ){
+					return 0;
+				};
+
+				HeaderControl.prototype.getWidth = function getWidth( ){
+					return scope.element.parent( ).width( );
+				};
+
+				HeaderControl.prototype.getZIndex = function getZIndex( ){
+					var parentElement = this.scope.element.parent( );
+					var zIndex = parentElement.css( "z-index" );
+					if( zIndex === "auto" ){
+						return 1;
+					}else if( typeof zIndex == "string" ){
+						zIndex = parseInt( zIndex );
+					}
+					if( isNaN( zIndex ) ){
+						throw new Error( "invalid z-index value" );
+					}
+					return zIndex + 1;
+				};
+
 				appDetermine( "HalfPage" )
 					.directive( "headerControl",
 						[
 							"bindDOM",
 							"safeApply",
-							"$timeout",
-							function construct( bindDOM, safeApply, $timeout ){
+							function construct( bindDOM, safeApply ){
 								return {
 									"restrict": "A",
 									"controller": headerControlController,
@@ -45,7 +95,11 @@ define( "headerControlDirective",
 										safeApply( scope );
 										bindDOM( scope, element, attribute );
 										
-										onRender( $timeout, element,
+										var headerControlObject = new HeaderControl( scope );
+										scope.element.data( "header-control-object", headerControlObject );
+										scope.headerControlObject = headerControlObject;
+
+										onRender( element,
 											function handler( ){
 												scope.GUID = attribute.headerControl;
 												scope.namespace = scope.name + "-" + scope.appName.toLowerCase( );
@@ -53,17 +107,16 @@ define( "headerControlDirective",
 
 												scope.element.attr( "namespace", scope.namespace );
 												headerControlStyle( scope.GUID );
+
 												Arbiter.subscribe( "on-resize:" + scope.namespace,
 													function handler( ){
-														var parentElement = scope.element.parent( );
-														var parentZIndex = parentElement.css( "z-index" );
 														scope.element.css( {
 															"position": "absolute !important",
-															"top": "0px !important",
-															"left": "0px !important",
-															//"z-index": " !important",
-															//"height": parentElement.height( ) + "px",
-															//"width": parentElement.width( ) + "px"
+															"top": scope.headerControlObject.getY( ),
+															"left": scope.headerControlObject.getX( ),
+															"z-index": scope.headerControlObject.getZIndex( ),
+															"height": scope.headerControlObject.getHeight( ),
+															"width": scope.headerControlObject.getWidth( )
 														} );
 													} );
 											} );
