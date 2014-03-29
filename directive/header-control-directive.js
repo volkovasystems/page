@@ -6,7 +6,7 @@ define( "headerControlDirective",
 		"jquery",
 		"requirejs",
 		"angular",
-		"moduleLoader"
+		"moduleLoadNotifier"
 	],
 	function construct( ){
 		requirejs.config( {
@@ -109,6 +109,7 @@ define( "headerControlDirective",
 												headerControlStyle( scope.GUID );
 
 												Arbiter.subscribe( "on-resize:" + scope.namespace,
+													"on-resize:" + scope.DOMID,
 													function handler( ){
 														scope.element.css( {
 															"position": "absolute !important",
@@ -125,6 +126,6 @@ define( "headerControlDirective",
 							}
 						] );
 				
-				moduleLoader( "header-control-directive" ).onLoad( );
+				moduleLoadNotifier( "header-control-directive" ).notifyModuleLoaded( );
 			} );
 	} );

@@ -6,7 +6,7 @@ define( "footerControlDirective",
 		"jquery",
 		"requirejs",
 		"angular",
-		"moduleLoader"
+		"moduleLoadNotifier"
 	],
 	function construct( ){
 		requirejs.config( {
@@ -129,6 +129,6 @@ define( "footerControlDirective",
 							}
 						] );
 
-				moduleLoader( "footer-control-directive" ).onLoad( );
+				moduleLoadNotifier( "footer-control-directive" ).notifyModuleLoaded( );
 			} );
 	} );

@@ -8,7 +8,7 @@ try{ var base = window; }catch( error ){ base = exports; }
 			"underscore",
 			"angular",
 			"jquery",
-			"moduleLoader"
+			"moduleLoadNotifier"
 		],
 		function construct( async ){
 			requirejs.config( {
@@ -244,10 +244,9 @@ try{ var base = window; }catch( error ){ base = exports; }
 					base.Page = Page;
 				}  );
 			
-			return moduleLoader( "page-directive",
+			return moduleLoadNotifier( "page-directive",
 				"page-content-directive",
 				"header-control-directive",
-				"footer-control-directive" )
-				.notify;
+				"footer-control-directive" );
 		} );
 } )( base );

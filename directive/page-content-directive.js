@@ -6,7 +6,7 @@ define( "pageContentDirective",
 		"jquery",
 		"requirejs",
 		"angular",
-		"moduleLoader"
+		"moduleLoadNotifier"
 	],
 	function construct( ){
 		requirejs.config( {
@@ -107,9 +107,8 @@ define( "pageContentDirective",
 												pageContentStyle( scope.GUID );
 												
 												Arbiter.subscribe( "on-resize:" + scope.namespace,
+													"on-resize:" + scope.DOMID,
 													function handler( ){
-														var parentElement = scope.element.parent( );
-														var parentZIndex = parentElement.css( "z-index" );
 														scope.element.css( {
 															"position": "absolute !important",
 															"top": scope.pageContentObject.getY( ),
@@ -125,6 +124,6 @@ define( "pageContentDirective",
 							}
 						] );
 
-				moduleLoader( "page-content-directive" ).onLoad( );
+				moduleLoadNotifier( "page-content-directive" ).notifyModuleLoaded( );
 			} );
 	} );
