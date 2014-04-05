@@ -88,8 +88,7 @@ define( "headerControlDirective",
 									"priority": 1,
 									"scope": {
 										"appName": "@",
-										"name": "@",
-										"container": "@" 
+										"name": "@"
 									},
 									"link": function link( scope, element, attribute ){
 										safeApply( scope );
